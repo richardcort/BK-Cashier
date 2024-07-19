@@ -17,6 +17,10 @@ const UserModel = {
     rol_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+            model: 'roles',
+            key: 'id'
+        }
     },
     nombre: {
         type: DataTypes.STRING(50),
