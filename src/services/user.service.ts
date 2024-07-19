@@ -1,4 +1,4 @@
-import { db, sequelize, UserDB } from "../config";
+import { db, sequelize } from "../config";
 import { UserInterface } from "../interfaces";
 
 export const getAll = async () => {

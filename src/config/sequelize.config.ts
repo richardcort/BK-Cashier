@@ -85,4 +85,4 @@ const syncModels = async () => {
 };
 syncModels();
 
-export { db, sequelize, UserDB };
+export { db, sequelize };

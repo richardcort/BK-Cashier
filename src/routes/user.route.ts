@@ -16,7 +16,6 @@ router.post("/",userValidator.validateUser,validateFields, userController.create
 
 router.put("/:id",userValidator.validateUser,validateFields, userController.updateUser);//http://localhost:3800/api/users/1
 
-
 router.delete("/:id", userController.deleteUser);//http://localhost:3800/api/users/1
 
 /*

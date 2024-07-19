@@ -38,7 +38,6 @@ export class UserController {
     });
   };
 
-
   deleteUser = async (req: Request, res: Response) => {
     const {id}=req.params
     const { status, message, data } = await deleted(parseInt(id) as number,req.body);
