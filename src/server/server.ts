@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { userRoute } from "../routes/index.route";
+import { userRoute, marcaRoute } from "../routes/index.route";
 import { db } from "../config/sequelize.config";
 
 export class Server {
@@ -15,6 +15,7 @@ export class Server {
         this.pre = "/api";
         this.paths = {
             users: this.pre + "/users",
+            marcas: this.pre + "/marcas",
         }; //paths means rutas or endpoints 
 
         this.connectDB();
@@ -24,6 +25,7 @@ export class Server {
 
     routes() {
         this.app.use(this.paths.users, userRoute);
+        this.app.use(this.paths.marcas, marcaRoute);
     }
     middlewares() {
         this.app.use(cors());
