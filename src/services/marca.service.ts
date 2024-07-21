@@ -33,10 +33,10 @@ export const getAll = async () => {
     }
 };
 
-export const getOne = async (id: string) => {
+export const getOne = async (codigo: string) => {
     try {
         const [marca] = await db.query("SELECT * FROM marcas WHERE codigo_marca = ? AND status = 1", {
-            replacements: [id],
+            replacements: [codigo],
             type: sequelize.QueryTypes.SELECT,
         });
 
@@ -101,7 +101,7 @@ export const update = async (codigo: string, data: MarcaInterface) => {
         await db.query(`UPDATE marcas SET
             nombre = :nombre,
             updatedAt = :updateAt
-        WHERE codigo_marca = :codigo_marca`,
+        WHERE codigo_marca = :codigo_marca AND status = 1`,
             {
                 replacements: {
                     codigo_marca: codigo,
@@ -132,7 +132,7 @@ export const deleted = async (codigo: string) => {
         await db.query(`UPDATE marcas SET
             status = 0,
             deletedAt = :deletedAt
-        WHERE codigo_marca = :codigo_marca`,
+        WHERE codigo_marca = :codigo_marca AND status = 1`,
             {
                 replacements: {
                     codigo_marca: codigo,
