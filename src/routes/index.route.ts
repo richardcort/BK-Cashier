@@ -1,11 +1,13 @@
 import userRoute from "./user.route";
 import marcaRoute from "./marca.route";
 import categoriaRoute from "./categoria.route";
+import productoRoute from "./producto.route";
 
 export {
     userRoute,
     marcaRoute,
     categoriaRoute,
+    productoRoute,
 }
 
 
