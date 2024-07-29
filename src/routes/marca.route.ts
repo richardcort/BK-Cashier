@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validateFields } from "../middlewares";
 import { MarcaController } from "../controllers";
-import { MarcaValidator } from "../validators/marca.validator";
+import { MarcaValidator } from "../validators";
 
 const marcaValidator = new MarcaValidator();
 const router = Router();

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { validateFields } from "../middlewares";
-import { CategoriaValidator } from "../validators/categoria.validator";
+import { CategoriaValidator } from "../validators";
 import { CategoriaController } from "../controllers";
 
 const router = Router();
