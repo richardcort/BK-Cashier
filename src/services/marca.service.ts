@@ -149,7 +149,7 @@ export const update = async (codigo: string, data: MarcaInterface) => {
     }
 };
 
-export const d3eleted = async (codigo: string) => {
+export const deleted = async (codigo: string) => {
     try {
         const query = `UPDATE marcas SET
             status = 0,
