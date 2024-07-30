@@ -9,7 +9,7 @@ const ProveedorModel = {
         type: DataTypes.STRING(100),
         allowNull: false,
     },
-    contacta_principal: {
+    contacto_principal: {
         type: DataTypes.STRING(200),
     },
     telefono: {
