@@ -175,10 +175,10 @@ export const update = async (codigo: string, data: ProductoInterface) => {
 
 export const deleted = async (codigo: string) => {
     try {
-        const query = `DELETE FROM productos
-            WHERE 
-            codigo_producto = :codigo_producto AND
-            status = 1`;
+        const query = `UPDATE productos SET
+            status = 0,
+            deletedAt = :deletedAt
+            WHERE codigo_producto = :codigo_producto AND status = 1`;
 
         await db.query(query, {
             replacements: {
