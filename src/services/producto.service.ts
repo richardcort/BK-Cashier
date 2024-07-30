@@ -1,5 +1,5 @@
 import { sequelize, db } from "../config";
-import { ProductoInterface } from "../interfaces/producto.interface";
+import { ProductoInterface } from "../interfaces";
 
 export const getAll = async () => {
     try {
