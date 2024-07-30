@@ -3,7 +3,9 @@ import { MarcaInterface } from "../interfaces"
 
 export const getAll = async () => {
     try {
-        const [marcas] = await db.query("SELECT * FROM marcas WHERE status = 1");
+        const query = `SELECT * FROM marcas WHERE status = 1`;
+
+        const [marcas] = await db.query(query);
 
         if (marcas.length == 0) {
             return {
@@ -35,7 +37,9 @@ export const getAll = async () => {
 
 export const getOne = async (codigo: string) => {
     try {
-        const [marca] = await db.query("SELECT * FROM marcas WHERE codigo_marca = ? AND status = 1", {
+        const query = `SELECT * FROM marcas WHERE codigo_marca = ? AND status = 1`;
+
+        const [marca] = await db.query(query, {
             replacements: [codigo],
             type: sequelize.QueryTypes.SELECT,
         });
@@ -68,7 +72,23 @@ export const getOne = async (codigo: string) => {
 
 export const create = async (data: MarcaInterface) => {
     try {
-        await db.query("INSERT INTO marcas (codigo_marca, nombre, createdAt, updatedAt, deletedAt, status) VALUES (:codigo_marca, :nombre, :createdAt, :updatedAt, :deletedAt, :status)", {
+        const query = `INSERT INTO marcas (
+            codigo_marca,
+            nombre, 
+            createdAt, 
+            updatedAt, 
+            deletedAt, 
+            status
+            ) VALUES (
+            :codigo_marca, 
+            :nombre, 
+            :createdAt, 
+            :updatedAt, 
+            :deletedAt, 
+            :status
+            )`;
+
+        await db.query(query, {
             replacements: {
                 codigo_marca: data.codigo_marca,
                 nombre: data.nombre,
@@ -98,10 +118,12 @@ export const create = async (data: MarcaInterface) => {
 
 export const update = async (codigo: string, data: MarcaInterface) => {
     try {
-        await db.query(`UPDATE marcas SET
+        const query = `UPDATE marcas SET
             nombre = :nombre,
             updatedAt = :updateAt
-        WHERE codigo_marca = :codigo_marca AND status = 1`,
+            WHERE codigo_marca = :codigo_marca AND status = 1`;
+
+        await db.query(query,
             {
                 replacements: {
                     codigo_marca: codigo,
@@ -127,12 +149,14 @@ export const update = async (codigo: string, data: MarcaInterface) => {
     }
 };
 
-export const deleted = async (codigo: string) => {
+export const d3eleted = async (codigo: string) => {
     try {
-        await db.query(`UPDATE marcas SET
+        const query = `UPDATE marcas SET
             status = 0,
             deletedAt = :deletedAt
-        WHERE codigo_marca = :codigo_marca AND status = 1`,
+            WHERE codigo_marca = :codigo_marca AND status = 1`;
+
+        await db.query(query,
             {
                 replacements: {
                     codigo_marca: codigo,

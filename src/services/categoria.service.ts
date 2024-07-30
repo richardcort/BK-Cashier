@@ -1,10 +1,11 @@
-import { QueryTypes } from "sequelize";
 import { db, sequelize } from "../config";
 import { CategoriaInterface } from "../interfaces";
 
 export const getAll = async () => {
     try {
-        const [categorias] = await db.query("SELECT * FROM categorias WHERE status = 1");
+        const query = `SELECT * FROM categorias WHERE status = 1`;
+
+        const [categorias] = await db.query(query);
 
         if (categorias.length == 0) {
             return {
@@ -36,7 +37,9 @@ export const getAll = async () => {
 
 export const getOne = async (codigo: string) => {
     try {
-        const categoria = await db.query("SELECT * FROM categorias WHERE codigo_categoria = ? AND status = 1", {
+        const query = `SELECT * FROM categorias WHERE codigo_categoria = ? AND status = 1`;
+
+        const categoria = await db.query(query, {
             replacements: [codigo],
             type: sequelize.QueryTypes.SELECT,
         });
@@ -69,7 +72,25 @@ export const getOne = async (codigo: string) => {
 
 export const create = async (data: CategoriaInterface) => {
     try {
-        await db.query("INSERT INTO categorias (codigo_categoria, nombre, descripcion, status, createdAt, updatedAt, deletedAt) VALUES (:codigo_categoria, :nombre, :descripcion, :status, :createdAt, :updatedAt, :deletedAt)", {
+        const query = `INSERT INTO categorias (
+            codigo_categoria,
+            nombre, 
+            descripcion, 
+            status, 
+            createdAt, 
+            updatedAt, 
+            deletedAt
+            ) VALUES (
+            :codigo_categoria, 
+            :nombre, 
+            :descripcion, 
+            :status, 
+            :createdAt, 
+            :updatedAt, 
+            :deletedAt
+            )`;
+
+        await db.query(query, {
             replacements: {
                 codigo_categoria: data.codigo_categoria,
                 nombre: data.nombre,
@@ -100,11 +121,13 @@ export const create = async (data: CategoriaInterface) => {
 
 export const update = async (codigo: string, data: CategoriaInterface) => {
     try {
-        await db.query(`UPDATE categorias SET
+        const query = `UPDATE categorias SET
                             nombre = :nombre,
                             descripcion = :descripcion,
                             updatedAt = :updatedAt
-                        WHERE codigo_categoria = :codigo_categoria AND status = 1`, {
+                        WHERE codigo_categoria = :codigo_categoria AND status = 1`;
+
+        await db.query(query, {
             replacements: {
                 codigo_categoria: codigo,
                 nombre: data.nombre,
@@ -132,10 +155,12 @@ export const update = async (codigo: string, data: CategoriaInterface) => {
 
 export const deleted = async (codigo: string) => {
     try {
-        await db.query(`UPDATE categorias SET
+        const query = `UPDATE categorias SET
                             status = 0,
                             deletedAt = :deletedAt
-                        WHERE codigo_categoria = :codigo_categoria AND status = 1`, {
+                        WHERE codigo_categoria = :codigo_categoria AND status = 1`;
+
+        await db.query(query, {
             replacements: {
                 codigo_categoria: codigo,
                 deletedAt: new Date(),
