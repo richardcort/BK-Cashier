@@ -3,6 +3,7 @@ import marcaRoute from "./marca.route";
 import categoriaRoute from "./categoria.route";
 import productoRoute from "./producto.route";
 import clienteRoute from "./cliente.route";
+import proveedorRoute from "./proveedor.route";
 
 export {
     userRoute,
@@ -10,6 +11,7 @@ export {
     categoriaRoute,
     productoRoute,
     clienteRoute,
+    proveedorRoute,
 }
 
 

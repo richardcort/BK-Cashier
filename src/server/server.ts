@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { userRoute, marcaRoute, categoriaRoute, productoRoute, clienteRoute } from "../routes/index.route";
+import { userRoute, marcaRoute, categoriaRoute, productoRoute, clienteRoute, proveedorRoute } from "../routes/index.route";
 import { db } from "../config/sequelize.config";
 
 export class Server {
@@ -19,6 +19,7 @@ export class Server {
             categorias: this.pre + "/categorias",
             productos: this.pre + "/productos",
             clientes: this.pre + "/clientes",
+            proveedores: this.pre + "/proveedores",
         }; //paths means rutas or endpoints 
 
         this.connectDB();
@@ -32,6 +33,7 @@ export class Server {
         this.app.use(this.paths.categorias, categoriaRoute);
         this.app.use(this.paths.productos, productoRoute);
         this.app.use(this.paths.clientes, clienteRoute);
+        this.app.use(this.paths.proveedores, proveedorRoute);
     }
     middlewares() {
         this.app.use(cors());
