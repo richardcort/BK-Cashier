@@ -72,7 +72,7 @@ export const getOne = async (codigo: string) => {
 
 export const create = async (data: ProductoInterface) => {
     try {
-        const query = `INSERT INTO productos (
+        const queryProducto = `INSERT INTO productos (
             codigo_producto, 
             nombre, 
             descripcion, 
@@ -96,7 +96,7 @@ export const create = async (data: ProductoInterface) => {
             :updatedAt
             );`;
 
-        await db.query(query, {
+        await db.query(queryProducto, {
             replacements: {
                 codigo_producto: data.codigo_producto,
                 nombre: data.nombre,
@@ -111,6 +111,32 @@ export const create = async (data: ProductoInterface) => {
             },
             type: sequelize.QueryTypes.INSERT,
         });
+
+        // Al momento de registra un producto 
+        // Creamos un registro en el inventario
+        const queryInventario = `INSERT INTO inventarios (
+                codigo_producto, 
+                aviso, 
+                stock, 
+                createdAt, 
+                updatedAt
+            ) VALUES (
+                :codigo_producto, 
+                :aviso, 
+                :stock, 
+                :createdAt, 
+                :updatedAt
+            )`;
+
+        await db.query(queryInventario, {
+            replacements: {
+                codigo_producto: data.codigo_producto,
+                aviso: 0,
+                stock: 0,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            }
+        })
 
         return {
             message: `Se agrego el produto`,
@@ -145,7 +171,7 @@ export const update = async (codigo: string, data: ProductoInterface) => {
 
         await db.query(query, {
             replacements: {
-                codigo_producto: data.codigo_producto,
+                codigo_producto: codigo,
                 nombre: data.nombre,
                 descripcion: data.descripcion,
                 precio: data.precio,
