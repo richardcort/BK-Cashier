@@ -153,6 +153,21 @@ export const create = async (data: CompraInterface) => {
                 type: sequelize.QueryTypes.INSERT,
                 transaction
             })
+
+            const queryUpdateInventario = `UPDATE inventarios SET
+            stock = stock + :stock,
+            updatedAt = :updatedAt
+            WHERE codigo_producto = :codigo_producto`
+
+            await db.query(queryUpdateInventario, {
+                replacements: {
+                    stock: detalle.cantidad,
+                    codigo_producto: detalle.codigo_producto,
+                    updatedAt: new Date()
+                },
+                type: sequelize.QueryTypes.UPDATE,
+                transaction
+            })
         }
 
         await transaction.commit()
