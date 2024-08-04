@@ -7,6 +7,7 @@ import proveedorRoute from "./proveedor.route"
 import inventarioRoute from "./inventario.route"
 import empresaRoute from "./empresa.route"
 import compraRoute from "./compra.route"
+import ventaRoute from "./venta.route"
 
 export {
     userRoute,
@@ -17,7 +18,8 @@ export {
     proveedorRoute,
     inventarioRoute,
     empresaRoute,
-    compraRoute
+    compraRoute,
+    ventaRoute
 }
 
 
