@@ -18,8 +18,6 @@ router.put("/:id",userValidator.validateUser,validateFields, userController.upda
 
 router.delete("/:id", userController.deleteUser);//http://localhost:3800/api/users/1
 
-/*
 router.post("/login",userValidator.validateLogin,validateFields, userController.loginUser);//http://localhost:3800/api/users
 
-*/
 export default router;

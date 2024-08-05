@@ -181,28 +181,36 @@ export const deleted = async (id: number, data: UserInterface) => {
   }
 };
 
-export const getByEmail = async (data: UserInterface) => {
-  /*
+export const getUserAndPassword = async (data: UserInterface) => {
   try {
-    //consultas a la base de datos van aca
-    const user:UserInterface|any = await UserDB.findOne({ where: { email:data.email } })
-    if (!user) {
+    const query = `SELECT usuario, clave FROM users 
+      WHERE 
+      status = 1 AND 
+      usuario = :usuario AND 
+      clave = :clave`
+
+    const [result] = await db.query(query, {
+      replacements: {
+        usuario: data.usuario,
+        clave: data.clave
+      }
+    })
+
+    if (result.length == 0) {
+      console.log("No encontrado");
       return {
-        message: `Usuario no encontrado`,
+        message: `Usuario no existe`,
         status: 404,
-        data: {
-          user
-        },
-      };
-    } else {
-      return {
-        message: `Usuario encontrado`,
-        status: 200,
-        data: {
-          user,
-        },
+        exists: false,
       };
     }
+
+    return {
+      message: `Usuario existe`,
+      status: 200,
+      exists: true
+    };
+
   } catch (error) {
     console.log(error);
     return {
@@ -210,5 +218,4 @@ export const getByEmail = async (data: UserInterface) => {
       status: 500,
     };
   }
-  */
 };
