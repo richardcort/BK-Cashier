@@ -75,7 +75,7 @@ export const create = async (data: UserInterface) => {
           apellido: data.apellido,
           usuario: data.usuario,
           clave: data.clave,
-          rol_id: data.rol_id,
+          rol_id: data.rol.id,
           createdAt: new Date(),
           updatedAt: new Date(),
           deletedAt: null,
@@ -105,7 +105,7 @@ export const create = async (data: UserInterface) => {
 
 export const update = async (id: number, data: UserInterface) => {
   try {
-    const [updatedRows] : any = await db.query(
+    const [updatedRows]: any = await db.query(
       `UPDATE users 
         SET nombre = :nombre, 
             apellido = :apellido, 
@@ -122,7 +122,7 @@ export const update = async (id: number, data: UserInterface) => {
           apellido: data.apellido,
           usuario: data.usuario,
           clave: data.clave,
-          rol_id: data.rol_id,
+          rol_id: data.rol.id,
           updatedAt: new Date(),
           status: true,
         },
@@ -134,13 +134,13 @@ export const update = async (id: number, data: UserInterface) => {
       message: `Actualización del usuario exitosa`,
       status: 200,
       data: {
-          id: id,
-          nombre: data.nombre,
-          apellido: data.apellido,
-          usuario: data.usuario,
-          clave: data.clave,
-          rol_id: data.rol_id,
-          updatedAt: new Date(),
+        id: id,
+        nombre: data.nombre,
+        apellido: data.apellido,
+        usuario: data.usuario,
+        clave: data.clave,
+        rol_id: data.rol.id,
+        updatedAt: new Date(),
       },
     };
 
@@ -183,20 +183,22 @@ export const deleted = async (id: number, data: UserInterface) => {
 
 export const getUserAndPassword = async (data: UserInterface) => {
   try {
-    const query = `SELECT usuario, clave FROM users 
-      WHERE 
-      status = 1 AND 
-      usuario = :usuario AND 
-      clave = :clave`
+    const query = `SELECT u.usuario, u.clave, u.rol_id, r.name FROM users u 
+        INNER JOIN roles r ON r.id = u.rol_id
+              WHERE 
+              status = 1 AND 
+              usuario = :usuario AND 
+              clave = :clave`
 
-    const [result] = await db.query(query, {
+    const results: any[] = await db.query(query, {
       replacements: {
         usuario: data.usuario,
         clave: data.clave
-      }
+      },
+      type: sequelize.QueryTypes.SELECT
     })
 
-    if (result.length == 0) {
+    if (results.length == 0) {
       console.log("No encontrado");
       return {
         message: `Usuario no existe`,
@@ -205,11 +207,18 @@ export const getUserAndPassword = async (data: UserInterface) => {
       };
     }
 
+    const user = {
+      usuario: results[0]['usuario'],
+      rolId: results[0]['rol_id'],
+      rolName: results[0]['name']
+    }
+
     return {
       message: `Usuario existe`,
       status: 200,
-      exists: true
-    };
+      exists: true,
+      user: user
+    }
 
   } catch (error) {
     console.log(error);
