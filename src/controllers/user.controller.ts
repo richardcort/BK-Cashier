@@ -49,10 +49,10 @@ export class UserController {
   };
 
   loginUser = async (req: Request, res: Response) => {
-    const { status, message, exists } = await getUserAndPassword(req.body)
+    const { status, message, exists, user } = await getUserAndPassword(req.body)
 
     if (exists == true) {
-      const token = generateToken(req.body)
+      const token = generateToken(user as object)
       setTokenCookie(res, token) // serializamos el token
     }
 
