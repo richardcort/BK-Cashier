@@ -1,11 +1,11 @@
 import jwt from "jsonwebtoken";
-import { UserInterface } from "../interfaces";
 
-export const generateToken = (data: UserInterface) => {
+export const generateToken = (data: any) => {
     return jwt.sign(
         {
             user: data.usuario,
-            password: data.clave
+            rolId: data.rolId,
+            rolName: data.rolName
         },
         process.env.TOKEN_SECRET as string,
         {
@@ -14,5 +14,10 @@ export const generateToken = (data: UserInterface) => {
 }
 
 export const verifyToken = (token: string) => {
-    return jwt.verify(token, process.env.TOKEN_SECRET as string)
+    try {
+        const verified = jwt.verify(token, process.env.TOKEN_SECRET as string)
+        return verified
+    } catch (error) {
+        return null
+    }
 }
