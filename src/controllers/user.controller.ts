@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { create, deleted, getAll, getOne, update, getUserAndPassword } from '../services/user.service';
-import { generateToken, setTokenCookie } from "../helpers";
+import { generateToken, setTokenCookie, clearTokenCookie } from "../helpers";
 
 export class UserController {
   constructor() { }
@@ -56,10 +56,19 @@ export class UserController {
       setTokenCookie(res, token) // serializamos el token
     }
 
+    console.log('Login')
     return res.status(status).json({
       message,
       exists,
     })
   }
 
+  logout = async (req: Request, res: Response) => {
+    clearTokenCookie(res)
+
+    console.log('Logout')
+    return res.status(200).json({
+      message: 'Logout',
+    })
+  }
 }
