@@ -1,5 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import cookie from 'cookie'
+import { verifyToken } from "../helpers";
+import { TokenPayload } from "../interfaces";
 
 // Middleware para verificar la autenticación del token
 export const verifyAuthToken = (req: Request, res: Response, next: NextFunction) => {
@@ -11,6 +13,15 @@ export const verifyAuthToken = (req: Request, res: Response, next: NextFunction)
         return res.status(401).send('Access Denied')
     }
 
-    console.log('Authorized access verifyAuthToken')
-    return next()
+    try {
+        const verified = verifyToken(token) as TokenPayload
+        req.user = verified
+
+        console.log('Authorized access verifyAuthToken')
+        return next()
+        
+    } catch (error) {
+        console.error('Invalid token', error);
+        return res.status(401).send('Invalid token');
+    }
 }
