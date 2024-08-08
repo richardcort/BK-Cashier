@@ -12,5 +12,5 @@ export const verifyAuthToken = (req: Request, res: Response, next: NextFunction)
     }
 
     console.log('Authorized access verifyAuthToken')
-    next()
+    return next()
 }

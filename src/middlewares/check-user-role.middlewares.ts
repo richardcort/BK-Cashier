@@ -20,7 +20,7 @@ export const checkUserRole = (roles: any) => {
         for (const rol of rolesArray) {
             if (rol == user.rolId) {
                 console.log('Authorized access checkUserRole: ' + user.rolName);
-                next();
+                return next();
             }
         }
 
