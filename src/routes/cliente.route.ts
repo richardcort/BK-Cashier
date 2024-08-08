@@ -1,20 +1,20 @@
 import { Router } from "express";
 import { ClienteController } from "../controllers";
 import { ClienteValidator } from "../validators";
-import { validateFields } from "../middlewares";
+import { validateFields, verifyAuthToken, checkUserRole } from "../middlewares";
 
 const router = Router()
 const clienteValidator = new ClienteValidator()
 const clienteController = new ClienteController()
 
-router.get('/', clienteController.allClientes)
+router.get('/', verifyAuthToken, clienteController.allClientes)
 
-router.get('/:cedula', clienteController.oneCliente)
+router.get('/:cedula', verifyAuthToken, clienteController.oneCliente)
 
-router.post('/', clienteValidator.validateCliente, validateFields, clienteController.createCliente)
+router.post('/', verifyAuthToken, checkUserRole({ rol: 1, rol2: 2, rol3: 3 }), clienteValidator.validateCliente, validateFields, clienteController.createCliente)
 
-router.put('/:cedula', clienteValidator.validateCliente, validateFields, clienteController.updateCliente)
+router.put('/:cedula', verifyAuthToken, checkUserRole({ rol: 1, rol2: 2 }), clienteValidator.validateCliente, validateFields, clienteController.updateCliente)
 
-router.delete('/:cedula', clienteController.deleteCliente)
+router.delete('/:cedula', verifyAuthToken, checkUserRole({ rol: 1 }), clienteController.deleteCliente)
 
 export default router;

@@ -1,17 +1,17 @@
 import { Router } from "express";
 import { EmpresaController } from "../controllers";
 import { EmpresaValidator } from "../validators";
-import { validateFields } from "../middlewares";
+import { validateFields, verifyAuthToken, checkUserRole } from "../middlewares";
 
 const router = Router()
 const empresaValidator = new EmpresaValidator()
 const empresaController = new EmpresaController()
 
-router.get('/', empresaController.oneEmpresa)
+router.get('/', verifyAuthToken, empresaController.oneEmpresa)
 
-router.post('/', empresaValidator.validateEmpresa, validateFields, empresaController.createEmpresa)
+router.post('/', verifyAuthToken, checkUserRole({ rol: 1 }), empresaValidator.validateEmpresa, validateFields, empresaController.createEmpresa)
 
-router.put('/:rif', empresaValidator.validateEmpresa, validateFields, empresaController.updateEmpresa)
+router.put('/:rif', verifyAuthToken, checkUserRole({ rol: 1 }), empresaValidator.validateEmpresa, validateFields, empresaController.updateEmpresa)
 
 
 export default router;
